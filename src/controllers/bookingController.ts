@@ -1,5 +1,5 @@
-import { Request, RequestHandler, Response } from 'express';
-import { prisma } from '../prisma.js';
+import { Request, RequestHandler, Response } from "express";
+import { prisma } from "../prisma.js";
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
@@ -7,20 +7,20 @@ export const getRecords = async (req: Request, res: Response) => {
       include: {
         user: {
           select: {
-            name: true
-          }
+            name: true,
+          },
         },
         team: {
           select: {
-            name: true
-          }
-        }
-      }
+            name: true,
+          },
+        },
+      },
     });
     res.json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch bookings' });
+    res.status(500).json({ error: "Failed to fetch bookings" });
   }
 };
 
@@ -31,25 +31,30 @@ export const createRecord = async (req: Request, res: Response) => {
   const parsedTeamId = Number(teamId);
   const parsedUserId = Number(userId);
 
-  if (!parsedTeamId || isNaN(parsedTeamId) || !parsedUserId || isNaN(parsedUserId)) {
-    res.status(400).json({ error: 'Valid userId and teamId are required' });
+  if (
+    !parsedTeamId ||
+    isNaN(parsedTeamId) ||
+    !parsedUserId ||
+    isNaN(parsedUserId)
+  ) {
+    res.status(400).json({ error: "Valid userId and teamId are required" });
   }
 
   if (!teamId || !userId) {
-    res.status(400).json({ error: 'User and team are required' });
+    res.status(400).json({ error: "User and team are required" });
   }
 
   try {
     const data = await prisma.booking.create({
       data: {
         teamId: parsedTeamId,
-        userId: parsedUserId
-      }
+        userId: parsedUserId,
+      },
     });
     res.status(201).json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to create booking' });
+    res.status(500).json({ error: "Failed to create booking" });
   }
 };
 
@@ -59,12 +64,12 @@ export const deleteRecord = async (req: Request, res: Response) => {
   try {
     await prisma.booking.delete({
       where: {
-        id: Number(id)
+        id: Number(id),
       },
     });
-    res.status(200).json({ message: 'Booking deleted' });
+    res.status(200).json({ message: "Booking deleted" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to delete booking' });
+    res.status(500).json({ error: "Failed to delete booking" });
   }
 };

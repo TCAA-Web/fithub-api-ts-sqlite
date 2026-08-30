@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { prisma } from '../prisma.js';
+import { Request, Response } from "express";
+import { prisma } from "../prisma.js";
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
@@ -9,22 +9,29 @@ export const getRecords = async (req: Request, res: Response) => {
         name: true,
         image: {
           select: {
-            url: true
-          }
+            url: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
         },
         ratings: {
           select: {
             id: true,
             numStars: true,
-            userId: true
-          }
-        }
-      }
+            userId: true,
+          },
+        },
+      },
     });
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch products' });
+    res.status(500).json({ error: "Failed to fetch products" });
   }
 };
 
@@ -39,29 +46,29 @@ export const getRecord = async (req: Request, res: Response) => {
             name: true,
             image: {
               select: {
-                url: true
-              }
-            }
-          }
+                url: true,
+              },
+            },
+          },
         },
         image: {
           select: {
-            url:true
-          }
+            url: true,
+          },
         },
         ratings: {
           select: {
             id: true,
             numStars: true,
-            userId: true
-          }
-        }
-      }
+            userId: true,
+          },
+        },
+      },
     });
-    if (!data) res.status(404).json({ error: 'Team not found' });
+    if (!data) res.status(404).json({ error: "Team not found" });
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch team' });
+    res.status(500).json({ error: "Failed to fetch team" });
   }
 };
