@@ -17,6 +17,7 @@ export const getRecords = async (req: Request, res: Response) => {
             id: true,
             name: true,
             description: true,
+            image: true,
           },
         },
         ratings: {
